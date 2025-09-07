@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files to Homie</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2D8C8C;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #2D8C8C;
+            border-radius: 8px;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        input[type="file"]:hover {
+            background: #e8f4f4;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        button {
+            background: #2D8C8C;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #247a7a;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+        .progress {
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: none;
+        }
+        .progress-bar {
+            background: #2D8C8C;
+            height: 20px;
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .file-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📁 Upload Files to Homie</h1>
+        <p>Upload PDFs, Google Slides, Google Docs, or other files to add them to Homie's knowledge base.</p>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Select File:</label>
+                <input type="file" id="file" accept=".pdf,.pptx,.docx,.txt,.doc" required>
+                <div class="file-info" id="fileInfo"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="contentType">Content Type:</label>
+                <select id="contentType" required>
+                    <option value="">Select content type...</option>
+                    <option value="policies">Policies & Procedures</option>
+                    <option value="procedures">Floor Plan Procedures</option>
+                    <option value="repairCosts">Repair Cost Data</option>
+                    <option value="eligibility">Eligibility Requirements</option>
+                    <option value="general">General Information</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="uploadBtn">Upload to Homie</button>
+        </form>
+        
+        <div class="progress" id="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div id="success" class="success"></div>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        // File selection handler
+        document.getElementById('file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const fileInfo = document.getElementById('fileInfo');
+                fileInfo.innerHTML = `
+                    <strong>Selected:</strong> ${file.name}<br>
+                    <strong>Size:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB<br>
+                    <strong>Type:</strong> ${file.type}
+                `;
+                fileInfo.style.display = 'block';
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('file');
+            const contentType = document.getElementById('contentType').value;
+            const file = fileInput.files[0];
+            
+            if (!file || !contentType) {
+                showError('Please select a file and content type.');
+                return;
+            }
+            
+            // Check file size (limit to 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                showError('File size must be less than 10MB.');
+                return;
+            }
+            
+            const uploadBtn = document.getElementById('uploadBtn');
+            const progress = document.getElementById('progress');
+            const progressBar = document.getElementById('progressBar');
+            
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Processing...';
+            progress.style.display = 'block';
+            
+            try {
+                // Convert file to base64
+                const base64 = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+                
+                const response = await fetch('/api/upload-file', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        fileData: base64,
+                        fileName: file.name,
+                        fileType: file.type,
+                        contentType: contentType
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccess(`File processed successfully! ${result.contentLength} characters extracted and added to ${contentType}.`);
+                    document.getElementById('uploadForm').reset();
+                    document.getElementById('fileInfo').style.display = 'none';
+                } else {
+                    showError(result.message || 'Upload failed. Please try again.');
+                    if (result.suggestion) {
+                        showError(result.suggestion + ' ' + (result.alternative || ''));
+                    }
+                }
+            } catch (error) {
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = 'Upload to Homie';
+                progress.style.display = 'none';
+                progressBar.style.width = '0%';
+            }
+        });
+        
+        function showSuccess(message) {
+            document.getElementById('success').textContent = message;
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+        }
+        
+        function showError(message) {
+            document.getElementById('error').textContent = message;
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('success').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
