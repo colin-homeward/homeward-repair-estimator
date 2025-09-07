@@ -1,6 +1,0 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- House shape -->
-  <path d="M16 2L26 12H20V26H12V12H6L16 2Z" fill="white"/>
-  <!-- Curved accent line -->
-  <path d="M10 8L16 2L22 8V14H10V8Z" fill="white"/>
-</svg>
