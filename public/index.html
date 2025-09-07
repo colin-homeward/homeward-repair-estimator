@@ -30,10 +30,13 @@
         /* Header with Homebase branding */
         header {
             background: #21374B;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            height: 120px;
+            display: flex;
+            align-items: center;
         }
 
         .header-content {
@@ -49,8 +52,8 @@
         }
 
         .logo-icon {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             background: url('homebase.svg') no-repeat center;
             background-size: contain;
         }
@@ -304,17 +307,11 @@
                 </div>
             </div>
 
-            <div class="section-header">
-                <h2 class="section-title">Repair Estimator</h2>
-                <button class="add-repair-btn">Add repair</button>
-            </div>
-
-            <a href="#" class="property-info-link">View property information ></a>
 
 
             <div class="chat-demo">
-                <h3>Try Our AI Repair Estimator</h3>
-                <p>Click the chat button in the bottom right corner to get started with your repair estimate!</p>
+                <h3>Ask Homie, our Homebase chatbot, any questions</h3>
+                <p>Click the button in the bottom right to get started with generating floor plans, understanding Homeward policy, or pricing repairs not yet in our catalog</p>
                 <button class="chat-demo-btn" onclick="document.querySelector('.homeward-chat-button').click()">Start Chat</button>
             </div>
         </div>
