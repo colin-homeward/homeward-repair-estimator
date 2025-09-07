@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Content to Homie</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2D8C8C;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #2D8C8C;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        button {
+            background: #2D8C8C;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #247a7a;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Upload Content to Homie</h1>
+        <p>Paste your PDF content here to add it to Homie's knowledge base.</p>
+        
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="contentType">Content Type:</label>
+                <select id="contentType" required>
+                    <option value="">Select content type...</option>
+                    <option value="policies">Policies & Procedures</option>
+                    <option value="procedures">Floor Plan Procedures</option>
+                    <option value="repairCosts">Repair Cost Data</option>
+                    <option value="eligibility">Eligibility Requirements</option>
+                    <option value="general">General Information</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="content">PDF Content (paste the text here):</label>
+                <textarea id="content" placeholder="Paste your PDF content here..." required></textarea>
+            </div>
+            
+            <button type="submit">Upload to Homie</button>
+        </form>
+        
+        <div id="success" class="success"></div>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const contentType = document.getElementById('contentType').value;
+            const content = document.getElementById('content').value;
+            
+            if (!contentType || !content.trim()) {
+                showError('Please select a content type and paste some content.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/upload-knowledge', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: contentType,
+                        content: content.trim()
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showSuccess(`Content uploaded successfully! ${result.contentLength} characters added to ${contentType}.`);
+                    document.getElementById('uploadForm').reset();
+                } else {
+                    showError(result.error || 'Upload failed. Please try again.');
+                }
+            } catch (error) {
+                showError('Network error. Please check your connection and try again.');
+            }
+        });
+        
+        function showSuccess(message) {
+            document.getElementById('success').textContent = message;
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+        }
+        
+        function showError(message) {
+            document.getElementById('error').textContent = message;
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('success').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
