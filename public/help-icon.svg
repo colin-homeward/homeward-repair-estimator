@@ -1,0 +1,29 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Wrench character with hammer -->
+  <circle cx="12" cy="12" r="12" fill="#2D8C8C"/>
+  
+  <!-- Wrench body -->
+  <path d="M8 10C8 8.5 9 7.5 10.5 7.5C12 7.5 13 8.5 13 10C13 11.5 12 12.5 10.5 12.5C9 12.5 8 11.5 8 10Z" fill="#87CEEB"/>
+  <path d="M10.5 6C10.5 5.5 10.5 5 10.5 4.5C10.5 4 10.5 3.5 10.5 3C10.5 2.5 10.5 2 10.5 1.5C10.5 1 10.5 0.5 10.5 0" stroke="#2D8C8C" stroke-width="1.5" fill="none"/>
+  
+  <!-- Eyes -->
+  <circle cx="9.5" cy="9" r="1" fill="white"/>
+  <circle cx="11.5" cy="9" r="1" fill="white"/>
+  <circle cx="9.5" cy="9" r="0.5" fill="black"/>
+  <circle cx="11.5" cy="9" r="0.5" fill="black"/>
+  
+  <!-- Smile -->
+  <path d="M9 10.5C9 10.5 10 11.5 12 11.5C14 11.5 15 10.5 15 10.5" stroke="black" stroke-width="1" fill="none"/>
+  
+  <!-- Arms -->
+  <path d="M7 8L6 7" stroke="#2D8C8C" stroke-width="1.5" fill="none"/>
+  <path d="M14 8L15 7" stroke="#2D8C8C" stroke-width="1.5" fill="none"/>
+  
+  <!-- Hammer -->
+  <rect x="13.5" y="6.5" width="2" height="1" fill="#808080"/>
+  <rect x="14" y="7.5" width="1" height="2" fill="#FFD700"/>
+  
+  <!-- Belt -->
+  <rect x="8" y="11" width="5" height="1" fill="#FFD700"/>
+  <rect x="10" y="10.5" width="1" height="2" fill="#FFD700"/>
+</svg>

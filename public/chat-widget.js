@@ -40,25 +40,29 @@ class HomewardRepairChatWidget {
                 font-size: 14px;
             }
 
-            .homeward-chat-button {
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                border: none;
-                cursor: pointer;
-                box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
-                transition: all 0.3s ease;
-                font-size: 24px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+                    .homeward-chat-button {
+                        height: 50px;
+                        padding: 0 20px;
+                        border-radius: 25px;
+                        background: #2D8C8C;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                        box-shadow: 0 4px 20px rgba(45, 140, 140, 0.3);
+                        transition: all 0.3s ease;
+                        font-size: 14px;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                        font-family: 'Montserrat', sans-serif;
+                    }
 
             .homeward-chat-button:hover {
-                transform: scale(1.1);
-                box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+                transform: scale(1.05);
+                box-shadow: 0 6px 25px rgba(45, 140, 140, 0.5);
+                background: #247a7a;
             }
 
             .homeward-chat-container {
@@ -76,16 +80,16 @@ class HomewardRepairChatWidget {
                 border: 1px solid #e1e5e9;
             }
 
-            .homeward-chat-header {
-                padding: 20px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                font-weight: 600;
-                font-size: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
+                    .homeward-chat-header {
+                        padding: 20px;
+                        background: #2D8C8C;
+                        color: white;
+                        font-weight: 600;
+                        font-size: 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
 
             .homeward-chat-title {
                 display: flex;
@@ -138,12 +142,12 @@ class HomewardRepairChatWidget {
                 }
             }
 
-            .homeward-user-message {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                margin-left: auto;
-                border-bottom-right-radius: 4px;
-            }
+                    .homeward-user-message {
+                        background: #2D8C8C;
+                        color: white;
+                        margin-left: auto;
+                        border-bottom-right-radius: 4px;
+                    }
 
             .homeward-bot-message {
                 background: white;
@@ -200,7 +204,7 @@ class HomewardRepairChatWidget {
             }
 
             .homeward-chat-input:focus {
-                border-color: #667eea;
+                border-color: #2D8C8C;
             }
 
             .homeward-chat-input::placeholder {
@@ -235,10 +239,13 @@ class HomewardRepairChatWidget {
         this.widget.className = 'homeward-chat-widget';
 
         // Create chat button
-        this.chatButton = document.createElement('button');
-        this.chatButton.className = 'homeward-chat-button';
-        this.chatButton.innerHTML = '🔧';
-        this.chatButton.setAttribute('aria-label', 'Open chat');
+                this.chatButton = document.createElement('button');
+                this.chatButton.className = 'homeward-chat-button';
+                this.chatButton.innerHTML = `
+                    <img src="help-icon.svg" alt="Help" style="width: 20px; height: 20px;">
+                    <span>Need help?</span>
+                `;
+                this.chatButton.setAttribute('aria-label', 'Open chat');
 
         // Create chat container
         this.chatContainer = document.createElement('div');
