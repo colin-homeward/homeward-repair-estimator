@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homeward Repair Estimator - Get Instant Repair Cost Estimates</title>
+    <title>Homebase Repair Estimator</title>
     <meta name="description" content="Get instant repair cost estimates for your home. Our AI-powered estimator helps you understand repair costs before you start any project.">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,10 +14,10 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             min-height: 100vh;
         }
 
@@ -26,370 +27,340 @@
             padding: 0 20px;
         }
 
+        /* Header with Homebase branding */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: #21374B;
             padding: 1rem 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        nav {
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 4px;
+            position: relative;
         }
 
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            background: #21374B;
+            border-radius: 2px;
         }
 
-        .nav-links a:hover {
-            color: #667eea;
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: white;
+            border-radius: 1px;
+            clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
         }
 
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
+        .logo-text {
             color: white;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .features {
-            background: white;
-            padding: 4rem 0;
-        }
-
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            text-align: center;
-            padding: 2rem;
-            border-radius: 16px;
-            background: #f8fafc;
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
             font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .how-it-works {
-            background: #f8fafc;
-            padding: 4rem 0;
-        }
-
-        .how-it-works h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .step {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .step-number {
-            display: inline-block;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            line-height: 60px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .step h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .step p {
-            color: #666;
-        }
-
-        .testimonial {
-            background: white;
-            padding: 4rem 0;
-            text-align: center;
-        }
-
-        .testimonial h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #333;
-        }
-
-        .testimonial-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: #f8fafc;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .testimonial-text {
-            font-size: 1.25rem;
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .testimonial-author {
             font-weight: 600;
-            color: #667eea;
+            text-transform: lowercase;
         }
 
-        footer {
-            background: #333;
-            color: white;
-            text-align: center;
+        /* Main content area */
+        .main-content {
+            background: white;
+            min-height: calc(100vh - 80px);
             padding: 2rem 0;
         }
 
+        .property-header {
+            margin-bottom: 2rem;
+        }
+
+        .status-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-tag.primary {
+            background: #2D8C8C;
+            color: white;
+        }
+
+        .status-tag.secondary {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+
+        .property-address {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6c757d;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #333;
+            border-bottom-color: #2D8C8C;
+        }
+
+        .tab:hover {
+            color: #333;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .add-repair-btn {
+            background: #2D8C8C;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-repair-btn:hover {
+            background: #247a7a;
+        }
+
+        .property-info-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .property-info-link:hover {
+            text-decoration: underline;
+        }
+
+        .approval-section {
+            margin-bottom: 2rem;
+        }
+
+        .approval-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .checkbox-group label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            cursor: pointer;
+        }
+
+        .credit-info {
+            text-align: right;
+            margin-bottom: 2rem;
+        }
+
+        .credit-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+
+        .credit-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
         .chat-demo {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
             padding: 2rem;
-            margin: 2rem auto;
-            max-width: 600px;
+            margin: 2rem 0;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .chat-demo h3 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
             margin-bottom: 1rem;
         }
 
         .chat-demo p {
+            color: #6c757d;
             margin-bottom: 1.5rem;
-            opacity: 0.9;
+        }
+
+        .chat-demo-btn {
+            background: #2D8C8C;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-demo-btn:hover {
+            background: #247a7a;
         }
 
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
+            .property-address {
+                font-size: 1.5rem;
             }
             
-            .nav-links {
-                display: none;
+            .tabs {
+                flex-wrap: wrap;
             }
             
-            .features-grid {
-                grid-template-columns: 1fr;
+            .tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <nav class="container">
-            <div class="logo">
-                🔧 Homeward Repair Estimator
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <span class="logo-text">homebase</span>
+                </div>
             </div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#testimonial">Testimonial</a></li>
-            </ul>
-        </nav>
+        </div>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Get Instant Repair Cost Estimates</h1>
-                <p>Our AI-powered repair estimator helps you understand the costs of home repairs before you start any project. Get accurate estimates in seconds.</p>
-                
-                <div class="chat-demo">
-                    <h3>Try Our Chat Estimator</h3>
-                    <p>Click the chat button in the bottom right corner to get started with your repair estimate!</p>
-                </div>
-                
-                <a href="#features" class="cta-button">Learn More</a>
-            </div>
-        </section>
-
-        <section id="features" class="features">
-            <div class="container">
-                <h2>Why Choose Our Repair Estimator?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h3>Instant Estimates</h3>
-                        <p>Get repair cost estimates in seconds using our advanced AI technology. No waiting, no forms to fill out.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h3>Accurate Pricing</h3>
-                        <p>Our AI is trained on real-world repair data to provide you with accurate, up-to-date cost estimates.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">💬</div>
-                        <h3>Easy to Use</h3>
-                        <p>Simply describe your repair needs in plain English, and our AI will provide detailed cost breakdowns.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🏠</div>
-                        <h3>All Home Repairs</h3>
-                        <p>From plumbing and electrical work to HVAC and structural repairs, we cover all types of home maintenance.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3>Detailed Breakdowns</h3>
-                        <p>Get itemized cost estimates including materials, labor, and any additional considerations for your project.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🆓</div>
-                        <h3>Completely Free</h3>
-                        <p>No hidden fees, no subscriptions required. Get unlimited repair estimates at no cost to you.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="how-it-works" class="how-it-works">
-            <div class="container">
-                <h2>How It Works</h2>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <h3>Describe Your Repair</h3>
-                        <p>Tell our AI what needs to be fixed in your home. Be as specific or general as you'd like.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <h3>AI Analysis</h3>
-                        <p>Our AI analyzes your request and considers factors like location, materials, and complexity.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <h3>Get Your Estimate</h3>
-                        <p>Receive a detailed cost breakdown with materials, labor, and total project cost.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="testimonial" class="testimonial">
-            <div class="container">
-                <h2>What Our Users Say</h2>
-                <div class="testimonial-content">
-                    <p class="testimonial-text">
-                        "This tool saved me thousands of dollars! I was able to get accurate estimates for my kitchen renovation before talking to contractors. The AI understood exactly what I needed and provided detailed cost breakdowns."
-                    </p>
-                    <p class="testimonial-author">- Sarah M., Homeowner</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
+    <main class="main-content">
         <div class="container">
-            <p>&copy; 2024 Homeward Repair Estimator. All rights reserved.</p>
+            <div class="property-header">
+                <div class="status-tags">
+                    <span class="status-tag primary">SBYL</span>
+                    <span class="status-tag secondary">Application not started</span>
+                </div>
+                <h1 class="property-address">6868 Derby Run Drive</h1>
+                
+                <div class="tabs">
+                    <button class="tab active">Repair Estimator</button>
+                    <button class="tab">Offer Builder</button>
+                    <button class="tab">Profitability Calculator</button>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Repair Estimator</h2>
+                <button class="add-repair-btn">Add repair</button>
+            </div>
+
+            <a href="#" class="property-info-link">View property information ></a>
+
+            <div class="approval-section">
+                <h3 class="approval-title">Approval</h3>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-withdrawn">
+                    <label for="show-withdrawn">Show withdrawn</label>
+                </div>
+            </div>
+
+            <div class="credit-info">
+                <div class="credit-label">Seller credit at approval:</div>
+                <div class="credit-amount">$26,456.00 USD</div>
+            </div>
+
+            <div class="chat-demo">
+                <h3>Try Our AI Repair Estimator</h3>
+                <p>Click the chat button in the bottom right corner to get started with your repair estimate!</p>
+                <button class="chat-demo-btn" onclick="document.querySelector('.homeward-chat-button').click()">Start Chat</button>
+            </div>
         </div>
-    </footer>
+    </main>
 
     <!-- Chat Widget -->
     <script src="chat-widget.js" 
             data-api-endpoint="/api/chat-fixed"
-            data-company-name="Homeward Repair Estimator"
+            data-company-name="Homebase Repair Estimator"
             data-welcome-message="Hi! I'm your repair cost estimator. I can help you get accurate estimates for home repairs. What needs fixing?"></script>
 </body>
 </html>
