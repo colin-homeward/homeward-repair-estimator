@@ -1,4 +1,4 @@
-const OpenAI = require('openai');
+import OpenAI from 'openai';
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -76,6 +76,12 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('OpenAI API error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      status: error.status,
+      type: error.type
+    });
     
     // Handle different types of errors
     if (error.code === 'insufficient_quota') {
@@ -90,8 +96,10 @@ export default async function handler(req, res) {
       });
     }
 
+    // Return more detailed error for debugging
     res.status(500).json({ 
-      error: 'Sorry, I encountered an error processing your request. Please try again.' 
+      error: 'Sorry, I encountered an error processing your request. Please try again.',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 }
