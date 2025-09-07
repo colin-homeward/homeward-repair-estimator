@@ -5,7 +5,7 @@
 
 class HomewardRepairChatWidget {
     constructor(options = {}) {
-        this.apiEndpoint = options.apiEndpoint || '/api/chat-simple';
+        this.apiEndpoint = options.apiEndpoint || '/api/chat-fixed';
         this.isOpen = false;
         this.messages = [];
         this.isLoading = false;
@@ -415,7 +415,7 @@ if (typeof window !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
         const script = document.querySelector('script[src*="chat-widget.js"]');
         if (script) {
-            const apiEndpoint = script.getAttribute('data-api-endpoint') || '/api/chat-simple';
+            const apiEndpoint = script.getAttribute('data-api-endpoint') || '/api/chat-fixed';
             const companyName = script.getAttribute('data-company-name') || 'Homeward Repair Estimator';
             const welcomeMessage = script.getAttribute('data-welcome-message') || 'Hi! I can help you estimate repair costs for your home. What needs fixing?';
             
