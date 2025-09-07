@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Drive Setup for Homie</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2D8C8C;
+            margin-bottom: 20px;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2D8C8C;
+        }
+        .step h3 {
+            color: #2D8C8C;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2D8C8C;
+        }
+        button {
+            background: #2D8C8C;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #247a7a;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+        .code {
+            background: #f1f3f4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Google Drive Integration Setup</h1>
+        <p>Set up automatic content sync from Google Drive to Homie's knowledge base.</p>
+        
+        <div class="warning">
+            <strong>⚠️ Important:</strong> This requires Google Cloud Console setup and environment variables. 
+            For now, you can use the manual text upload method.
+        </div>
+        
+        <div class="step">
+            <h3>Step 1: Create Google Cloud Project</h3>
+            <ol>
+                <li>Go to <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+                <li>Create a new project or select existing one</li>
+                <li>Enable the Google Drive API</li>
+                <li>Create a Service Account</li>
+                <li>Download the JSON credentials file</li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <h3>Step 2: Create Google Drive Folder</h3>
+            <ol>
+                <li>Create a folder in Google Drive</li>
+                <li>Share the folder with your service account email</li>
+                <li>Give "Viewer" permissions</li>
+                <li>Copy the folder ID from the URL</li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <h3>Step 3: Add Environment Variables</h3>
+            <p>Add these to your Vercel environment variables:</p>
+            <div class="code">
+                GOOGLE_CLIENT_EMAIL=your-service-account@project.iam.gserviceaccount.com<br>
+                GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----"
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 4: Test the Integration</h3>
+            <form id="testForm">
+                <div class="form-group">
+                    <label for="folderId">Google Drive Folder ID:</label>
+                    <input type="text" id="folderId" placeholder="1ABC123DEF456GHI789JKL" required>
+                    <small>Get this from the folder URL: drive.google.com/drive/folders/FOLDER_ID</small>
+                </div>
+                
+                <button type="submit">Sync with Google Drive</button>
+            </form>
+        </div>
+        
+        <div id="success" class="success"></div>
+        <div id="error" class="error"></div>
+        
+        <div class="step">
+            <h3>Alternative: Manual Upload</h3>
+            <p>If you prefer not to set up Google Drive integration, you can still use manual uploads:</p>
+            <a href="upload-content.html" style="color: #2D8C8C; text-decoration: none; font-weight: 500;">
+                → Go to Manual Text Upload
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const folderId = document.getElementById('folderId').value.trim();
+            
+            if (!folderId) {
+                showError('Please enter a Google Drive folder ID.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/google-drive-sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ folderId })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showSuccess(`Google Drive sync completed! Processed ${result.processedFiles} files from ${result.totalFiles} total files.`);
+                } else {
+                    showError(result.error || 'Sync failed. Please check your setup and try again.');
+                }
+            } catch (error) {
+                showError('Network error. Please check your connection and try again.');
+            }
+        });
+        
+        function showSuccess(message) {
+            document.getElementById('success').textContent = message;
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+        }
+        
+        function showError(message) {
+            document.getElementById('error').textContent = message;
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('success').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
