@@ -5,7 +5,7 @@
 
 class HomewardRepairChatWidget {
     constructor(options = {}) {
-        this.apiEndpoint = options.apiEndpoint || '/api/chat-fixed';
+        this.apiEndpoint = options.apiEndpoint || 'https://colin-homeward.app.n8n.cloud/webhook-test/30670948-d6da-45d5-9f32-b0d9b88a8d5a';
         this.isOpen = false;
         this.messages = [];
         this.isLoading = false;
@@ -318,7 +318,15 @@ class HomewardRepairChatWidget {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message })
+                body: JSON.stringify({ 
+                    message: message,
+                    // Add any additional context you want to send to your n8n agent
+                    context: {
+                        company: 'Homebase',
+                        agent: 'Homie',
+                        timestamp: new Date().toISOString()
+                    }
+                })
             });
 
             if (!response.ok) {
@@ -326,7 +334,20 @@ class HomewardRepairChatWidget {
             }
 
             const data = await response.json();
-            this.addMessage(data.response, 'bot');
+            
+            // Handle different response formats from n8n
+            let botResponse;
+            if (data.response) {
+                botResponse = data.response;
+            } else if (data.message) {
+                botResponse = data.message;
+            } else if (typeof data === 'string') {
+                botResponse = data;
+            } else {
+                botResponse = 'I received your message but need to process it. Please try again.';
+            }
+            
+            this.addMessage(botResponse, 'bot');
         } catch (error) {
             console.error('Chat error:', error);
             this.addMessage('Sorry, I encountered an error. Please try again.', 'bot');
@@ -359,9 +380,9 @@ if (typeof window !== 'undefined') {
         console.log('Auto-initializing chat widget...');
         const script = document.querySelector('script[src*="chat-widget-fixed.js"]');
         if (script) {
-            const apiEndpoint = script.getAttribute('data-api-endpoint') || '/api/chat-fixed';
-            const companyName = script.getAttribute('data-company-name') || 'Homeward Repair Estimator';
-            const welcomeMessage = script.getAttribute('data-welcome-message') || 'Hi! I can help you estimate repair costs for your home. What needs fixing?';
+            const apiEndpoint = script.getAttribute('data-api-endpoint') || 'https://colin-homeward.app.n8n.cloud/webhook-test/30670948-d6da-45d5-9f32-b0d9b88a8d5a';
+            const companyName = script.getAttribute('data-company-name') || 'Homie';
+            const welcomeMessage = script.getAttribute('data-welcome-message') || 'Hi, I\'m Homie! The Homebase chatbot. I can help with generating floor plans, understanding Homeward policy, or pricing repairs not yet in our catalog';
             
             try {
                 new HomewardRepairChatWidget({
