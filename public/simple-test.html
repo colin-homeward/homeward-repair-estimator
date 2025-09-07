@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+</head>
+<body>
+    <h1>Simple Chat Widget Test</h1>
+    <p>This should show a chat widget in the bottom right.</p>
+    
+    <script>
+        console.log('Page loaded');
+        
+        // Create a simple widget manually
+        const widget = document.createElement('div');
+        widget.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #2D8C8C;
+            border-radius: 50%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        `;
+        widget.innerHTML = '🔧';
+        widget.onclick = () => alert('Chat widget clicked!');
+        
+        document.body.appendChild(widget);
+        console.log('Simple widget added');
+    </script>
+</body>
+</html>
